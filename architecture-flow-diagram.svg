@@ -1,0 +1,227 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="1650" viewBox="0 0 1900 1650" role="img" aria-label="miniZomato architecture and order lifecycle flow diagram">
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 32px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 600 20px 'Segoe UI', Arial, sans-serif; fill: #1e293b; }
+      .group-title { font: 700 18px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .box-title { font: 700 14px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .box-text { font: 12px 'Segoe UI', Arial, sans-serif; fill: #1f2937; }
+      .tiny { font: 11px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .group-front { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2; }
+      .group-back { fill: #ecfccb; stroke: #65a30d; stroke-width: 2; }
+      .group-real { fill: #fee2e2; stroke: #ef4444; stroke-width: 2; }
+      .node-front { fill: #ffffff; stroke: #0ea5e9; stroke-width: 1.5; rx: 10; ry: 10; }
+      .node-back { fill: #ffffff; stroke: #84cc16; stroke-width: 1.5; rx: 10; ry: 10; }
+      .node-real { fill: #ffffff; stroke: #f87171; stroke-width: 1.5; rx: 10; ry: 10; }
+      .seq-head { fill: #ffffff; stroke: #64748b; stroke-width: 1.5; rx: 8; ry: 8; }
+      .arrow { stroke: #334155; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-dash { stroke: #334155; stroke-width: 2; stroke-dasharray: 7 5; fill: none; marker-end: url(#arrowhead); }
+      .lifeline { stroke: #94a3b8; stroke-width: 1.5; stroke-dasharray: 5 5; }
+      .section-divider { stroke: #cbd5e1; stroke-width: 2; }
+      .message { font: 12px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#334155" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1900" height="1650" />
+
+  <text class="title" x="40" y="50">miniZomato - Architecture and Core Order Flow</text>
+
+  <text class="subtitle" x="40" y="95">1) High-Level System Architecture</text>
+
+  <!-- Frontend group -->
+  <rect class="group-front" x="40" y="120" width="860" height="620" rx="16" ry="16" />
+  <text class="group-title" x="60" y="150">Frontend (client/ - Vite + React + TypeScript)</text>
+
+  <rect class="node-front" x="90" y="185" width="250" height="85" />
+  <text class="box-title" x="110" y="210">App.tsx</text>
+  <text class="box-text" x="110" y="230">Role-based routes</text>
+  <text class="box-text" x="110" y="248">ProtectedRoute for customer/delivery/admin</text>
+
+  <rect class="node-front" x="90" y="300" width="250" height="220" />
+  <text class="box-title" x="110" y="325">Global Contexts</text>
+  <text class="box-text" x="110" y="348">AuthContext (JWT/session)</text>
+  <text class="box-text" x="110" y="368">CartContext (cart state)</text>
+  <text class="box-text" x="110" y="388">SocketContext (realtime events)</text>
+  <text class="box-text" x="110" y="418">Events:</text>
+  <text class="box-text" x="130" y="438">partner_location</text>
+  <text class="box-text" x="130" y="458">order_update</text>
+  <text class="box-text" x="130" y="478">new_order</text>
+  <text class="box-text" x="130" y="498">speed_alert</text>
+
+  <rect class="node-front" x="390" y="185" width="470" height="200" />
+  <text class="box-title" x="410" y="210">Pages (by role)</text>
+  <text class="box-text" x="410" y="235">auth: Login, Register</text>
+  <text class="box-text" x="410" y="255">customer: OrderFood, TrackOrder</text>
+  <text class="box-text" x="410" y="275">delivery: Dashboard, Navigation, QR, Safety</text>
+  <text class="box-text" x="410" y="295">admin: Overview, Orders, Partners, Violations, Restaurants</text>
+  <text class="box-text" x="410" y="325">TrackOrder uses Leaflet map + live driver updates</text>
+  <text class="box-text" x="410" y="345">DeliveryDashboard allows up to 4 active assignments</text>
+
+  <rect class="node-front" x="390" y="415" width="470" height="105" />
+  <text class="box-title" x="410" y="440">services/*</text>
+  <text class="box-text" x="410" y="463">api.ts, authService, orderService, deliveryService, routingService</text>
+  <text class="box-text" x="410" y="483">restaurantService, foodService, qrService, adminService</text>
+
+  <rect class="node-front" x="390" y="550" width="470" height="150" />
+  <text class="box-title" x="410" y="575">Utility + UI layers</text>
+  <text class="box-text" x="410" y="598">components/: Sidebar, TopBar, Panel, Timeline, maps</text>
+  <text class="box-text" x="410" y="618">utils/: status mapping, route helpers, fleet simulation</text>
+  <text class="box-text" x="410" y="638">hooks/: polling</text>
+  <text class="box-text" x="410" y="658">styles/: global CSS</text>
+
+  <!-- Backend group -->
+  <rect class="group-back" x="1000" y="120" width="860" height="760" rx="16" ry="16" />
+  <text class="group-title" x="1020" y="150">Backend (server/ - FastAPI + SQLAlchemy + Socket.IO)</text>
+
+  <rect class="node-back" x="1050" y="185" width="220" height="75" />
+  <text class="box-title" x="1070" y="210">run.py</text>
+  <text class="box-text" x="1070" y="232">uvicorn app.main:socket_app</text>
+
+  <rect class="node-back" x="1310" y="185" width="280" height="75" />
+  <text class="box-title" x="1330" y="210">app/main.py</text>
+  <text class="box-text" x="1330" y="232">FastAPI app + startup + socket events</text>
+
+  <rect class="node-back" x="1050" y="290" width="770" height="130" />
+  <text class="box-title" x="1070" y="315">routers/* (API endpoints)</text>
+  <text class="box-text" x="1070" y="338">auth, users, restaurants, food_items, orders</text>
+  <text class="box-text" x="1070" y="358">delivery, routing, qr, safety, admin</text>
+  <text class="box-text" x="1070" y="385">Role checks via require_role + get_current_user</text>
+
+  <rect class="node-back" x="1050" y="450" width="230" height="105" />
+  <text class="box-title" x="1070" y="475">services/*</text>
+  <text class="box-text" x="1070" y="497">auth_service</text>
+  <text class="box-text" x="1070" y="517">route_optimizer</text>
+  <text class="box-text" x="1070" y="537">qr_service</text>
+
+  <rect class="node-back" x="1320" y="450" width="230" height="105" />
+  <text class="box-title" x="1340" y="475">models/*</text>
+  <text class="box-text" x="1340" y="497">User, DeliveryPartner, Order</text>
+  <text class="box-text" x="1340" y="517">FoodItem, Restaurant, QRSession</text>
+  <text class="box-text" x="1340" y="537">Violation</text>
+
+  <rect class="node-back" x="1590" y="450" width="230" height="105" />
+  <text class="box-title" x="1610" y="475">schemas/*</text>
+  <text class="box-text" x="1610" y="497">Pydantic request/response</text>
+  <text class="box-text" x="1610" y="517">validation + API contracts</text>
+
+  <rect class="node-back" x="1190" y="590" width="510" height="95" />
+  <text class="box-title" x="1210" y="615">database.py + SQLite</text>
+  <text class="box-text" x="1210" y="637">SessionLocal, Base models, local DB file: smartroute.db</text>
+  <text class="box-text" x="1210" y="657">Startup creates/migrates tables and seeds demo data</text>
+
+  <rect class="node-back" x="1050" y="590" width="120" height="95" />
+  <text class="box-title" x="1062" y="615">CSV Seed</text>
+  <text class="box-text" x="1062" y="637">restaurants_</text>
+  <text class="box-text" x="1062" y="652">cleaned.csv</text>
+
+  <rect class="node-back" x="1050" y="715" width="770" height="135" />
+  <text class="box-title" x="1070" y="740">Socket Event Layer</text>
+  <text class="box-text" x="1070" y="762">join_tracking -> room order_{id}</text>
+  <text class="box-text" x="1070" y="782">location_update -> emits partner_location per active order room</text>
+  <text class="box-text" x="1070" y="802">order_status_update -> emits order_update</text>
+  <text class="box-text" x="1070" y="822">new_order notifications for delivery_partners room</text>
+
+  <!-- Realtime group -->
+  <rect class="group-real" x="640" y="760" width="620" height="120" rx="16" ry="16" />
+  <text class="group-title" x="660" y="790">Realtime Channel</text>
+
+  <rect class="node-real" x="690" y="810" width="240" height="55" />
+  <text class="box-title" x="710" y="833">socket.io-client</text>
+  <text class="tiny" x="710" y="851">Used by SocketContext in frontend</text>
+
+  <rect class="node-real" x="970" y="810" width="240" height="55" />
+  <text class="box-title" x="990" y="833">Socket.IO ASGI server</text>
+  <text class="tiny" x="990" y="851">app.sio_server + main.py handlers</text>
+
+  <!-- Architecture arrows -->
+  <line class="arrow" x1="340" y1="228" x2="390" y2="228" />
+  <line class="arrow" x1="215" y1="270" x2="215" y2="300" />
+  <line class="arrow" x1="625" y1="385" x2="625" y2="415" />
+  <line class="arrow" x1="625" y1="520" x2="625" y2="550" />
+
+  <line class="arrow" x1="1270" y1="222" x2="1310" y2="222" />
+  <line class="arrow" x1="1450" y1="260" x2="1450" y2="290" />
+  <line class="arrow" x1="1270" y1="420" x2="1165" y2="450" />
+  <line class="arrow" x1="1435" y1="420" x2="1435" y2="450" />
+  <line class="arrow" x1="1600" y1="420" x2="1705" y2="450" />
+  <line class="arrow" x1="1435" y1="555" x2="1435" y2="590" />
+  <line class="arrow" x1="1110" y1="590" x2="1310" y2="260" />
+  <line class="arrow" x1="1435" y1="685" x2="1435" y2="715" />
+
+  <line class="arrow" x1="930" y1="838" x2="970" y2="838" />
+  <line class="arrow" x1="970" y1="852" x2="930" y2="852" />
+
+  <line class="arrow" x1="860" y1="468" x2="1050" y2="355" />
+  <line class="arrow" x1="280" y1="388" x2="810" y2="810" />
+  <line class="arrow" x1="1210" y1="838" x2="1310" y2="780" />
+
+  <!-- Divider -->
+  <line class="section-divider" x1="40" y1="920" x2="1860" y2="920" />
+
+  <text class="subtitle" x="40" y="965">2) Core Order Lifecycle Sequence</text>
+
+  <!-- Sequence participants -->
+  <rect class="seq-head" x="110" y="995" width="190" height="42" />
+  <text class="box-title" x="135" y="1022">Customer UI</text>
+
+  <rect class="seq-head" x="430" y="995" width="190" height="42" />
+  <text class="box-title" x="472" y="1022">FastAPI</text>
+
+  <rect class="seq-head" x="750" y="995" width="190" height="42" />
+  <text class="box-title" x="807" y="1022">SQLite</text>
+
+  <rect class="seq-head" x="1070" y="995" width="190" height="42" />
+  <text class="box-title" x="1110" y="1022">Delivery UI</text>
+
+  <rect class="seq-head" x="1390" y="995" width="190" height="42" />
+  <text class="box-title" x="1440" y="1022">Socket.IO</text>
+
+  <line class="lifeline" x1="205" y1="1037" x2="205" y2="1570" />
+  <line class="lifeline" x1="525" y1="1037" x2="525" y2="1570" />
+  <line class="lifeline" x1="845" y1="1037" x2="845" y2="1570" />
+  <line class="lifeline" x1="1165" y1="1037" x2="1165" y2="1570" />
+  <line class="lifeline" x1="1485" y1="1037" x2="1485" y2="1570" />
+
+  <!-- Sequence messages -->
+  <line class="arrow" x1="205" y1="1080" x2="525" y2="1080" />
+  <text class="message" x="245" y="1072">1. POST /orders (items + location)</text>
+
+  <line class="arrow" x1="525" y1="1120" x2="845" y2="1120" />
+  <text class="message" x="575" y="1112">2. Create order + items (status=pending)</text>
+
+  <line class="arrow-dash" x1="525" y1="1160" x2="205" y2="1160" />
+  <text class="message" x="260" y="1152">3. Return created order</text>
+
+  <line class="arrow" x1="525" y1="1200" x2="1485" y2="1200" />
+  <text class="message" x="760" y="1192">4. Emit new_order to delivery_partners room</text>
+
+  <line class="arrow" x1="1165" y1="1240" x2="525" y2="1240" />
+  <text class="message" x="690" y="1232">5. GET available orders / POST accept order</text>
+
+  <line class="arrow" x1="525" y1="1280" x2="845" y2="1280" />
+  <text class="message" x="602" y="1272">6. Assign partner + status update</text>
+
+  <line class="arrow" x1="525" y1="1320" x2="1485" y2="1320" />
+  <text class="message" x="790" y="1312">7. Emit order_update to order_{id}</text>
+
+  <line class="arrow" x1="205" y1="1360" x2="1485" y2="1360" />
+  <text class="message" x="760" y="1352">8. join_tracking(order_id)</text>
+
+  <line class="arrow" x1="1165" y1="1400" x2="1485" y2="1400" />
+  <text class="message" x="1200" y="1392">9. location_update(partner_id, lat, lng, speed)</text>
+
+  <line class="arrow" x1="1485" y1="1440" x2="205" y2="1440" />
+  <text class="message" x="785" y="1432">10. partner_location for active order room</text>
+
+  <line class="arrow" x1="525" y1="1480" x2="845" y2="1480" />
+  <text class="message" x="570" y="1472">11. Progress states: confirmed -> ... -> delivered</text>
+
+  <line class="arrow" x1="525" y1="1520" x2="1485" y2="1520" />
+  <text class="message" x="815" y="1512">12. Emit each order_update status change</text>
+
+  <text class="tiny" x="40" y="1615">Generated for local project documentation. File: architecture-flow-diagram.svg</text>
+</svg>
